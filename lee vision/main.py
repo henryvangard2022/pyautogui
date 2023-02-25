@@ -5,14 +5,15 @@ import time
 pg.FAILSAFE = True
 pg.PAUSE = 0.5
 
-print('This is a 32 inch curve screen: ', pg.size())
+# print('This is a 32 inch curve screen: ', pg.size())
 
 
 # important:  make sure to open, maximize and close Chrome before starting
 
 # right click Chrome icon on the taskbar
-pg.leftClick(515, 1260, 1, 3)
-time.sleep(1)
+def RunChome():
+    pg.leftClick(515, 1260, 1, 3)
+    time.sleep(1)
 
 
 # go to Lee Vision website
@@ -104,11 +105,17 @@ def GoToHeaderLinks():
 # scroll to the footer links
 
 def ScrollToBottom():
-    pg.scroll(-3200)
+    # must set starting position first before scrolling
+    SetStartingPosition()
+
+    pg.scroll(-5000)
 
 # footer links
 
 def GoToFooterLinks():
+    # scroll towards the bottom first
+    ScrollToBottom()
+
     pg.moveTo(815,1030,2)  
     pg.alert('Our Eye Care Clinic')
 
@@ -127,20 +134,85 @@ def GoToFooterLinks():
 def CloseChrome():
     pg.leftClick(2535, 15, 1, 3)
 
+# Misc Functions
+
+# set a starting position
+def SetStartingPosition():
+    pg.leftClick(650,650,1)
+
+
+######################################################################################
+#
+# Main
+#
+######################################################################################
+
+def Start():
+    while (True):
+        print('\n<<<<<<<<<<<<<<<<<<<<<<<<< Main Menu >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n')
+        print('1.  Top Links - Verify or Traverse')
+        print('2.  Left Links - Verify or Traverse')
+        print('3.  Header Links - Verify or Traverse')
+        print('4.  Footer Links - Verify or Traverse')
+        print('5.  Exit')
+        choice = input ('> ')
+
+        if choice == '':
+            continue
+
+        if int(choice) == 1:  # top links
+            # run Chrome
+            RunChome()
+            # go to Lee Vision website
+            GotoLV()
+            
+            GoToTopLinks()
+            CloseChrome()
+        elif int(choice) ==  2:  # left links
+            # run Chrome
+            RunChome()
+            # go to Lee Vision website
+            GotoLV()
+            
+            GoToLeftLinks()
+            CloseChrome()
+        elif int(choice) ==  3:  # header links
+            # run Chrome
+            RunChome()
+            # go to Lee Vision website
+            GotoLV()
+
+            GoToHeaderLinks()
+            CloseChrome()
+        elif int(choice) ==  4:  # footer links
+            # run Chrome
+            RunChome()
+            # go to Lee Vision website
+            GotoLV()
+
+            GoToFooterLinks()
+            CloseChrome()                        
+        elif int(choice) == 5:  # exit
+            exit()
+
+
 ######################################################################################
 # Status as of 02/19/23:
 #
 # Links are all verified.
 # Next, follow each link and verify the titles.
 #
+# Remaining Issues:
+# 
+# 1.
+# It's NOT scrolling to the bottom.  2/24/23
+# Need to set a starting position first.
+# Resolved:  Set a starting position first with SetStartPosition()
+#
+# 2.
+# Implement the Traverse functions.  2/24/23
 ######################################################################################
 
-if __name__ == '__main__':
-    GotoLV()
-    GoToTopLinks()
-    GoToHeaderLinks()
-    GoToLeftLinks()
-    ScrollToBottom()
-    GoToFooterLinks()
-    CloseChrome()
 
+if __name__ == '__main__':
+    Start()
